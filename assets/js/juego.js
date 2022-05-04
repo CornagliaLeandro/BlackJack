@@ -5,14 +5,28 @@
  * 2s = 2 de espada(two of the spades)
  */
 
-// import _ from "./underscore-min.";
-
-//
 let deck = [];
 const tipos = ['C', 'D', 'H', 'S'];
 const especiales = ['J', 'Q', 'K', 'A'];
+let puntosJugador = 0;
+let puntosComputadora = 0;
+
+//Referencias a nuestro HTML
+
+const btnNuevo = document.querySelector('#btnNuevo');
+const btnPedir = document.querySelector('#btnPedir');
+const btnDetener = document.querySelector('#btnDetener');
+const puntosHTML = document.querySelectorAll('small');
+const divCartasJugador = document.querySelector('#jugador-carta');
+const divCartasComputadora = document.querySelector('#computadora-carta');
+
+
+btnNuevo.addEventListener('click', () =>{
+    
+})
 
 //Esta funcion crea una nueva baraja
+
 const crearDeck = () => {
     for (let i = 2; i <= 10; i++) {
         for (let tipo of tipos) {
@@ -24,10 +38,7 @@ const crearDeck = () => {
             deck.push(esp + tipos[i])
         }
     }
-
-    //en javaScript no tenemos una funcion para los arreglos que mezcle todos sus elementos, asi que tendremos que usar una libreria(underscorejs.org la cual esta en el archivo underscore.js) ofrece funciones que javascript deberia tener por defecto pero no las tiene...(Aclaracion= la siguiente funcion mezcla la baraja, pero no es de underscore)
     return deck;
-
 }
 
 crearDeck();
@@ -39,8 +50,6 @@ function shuffleArray(array) {
 }
 
 shuffleArray(deck);
-// console.log(shuffleArray(deck))
-// console.log(deck)
 
 //Esta funcion da una carta y la quita del mazo
 const darCarta = () => {
@@ -53,13 +62,10 @@ const darCarta = () => {
     }
 }
 
-console.log(deck)
-// console.log(darCarta())
-
 //extraer el valor de la carta dada
-const valorCarta = () => {
+const valorCarta = (carta) => {
 
-    let valueCard = darCarta();
+    let valueCard = carta;
     let valor;
     let puntos;
 
@@ -77,13 +83,80 @@ const valorCarta = () => {
 
     return puntos;
 }
-console.log(deck)
-console.log(valorCarta())
-console.log(deck)
 
-console.log(deck)
-console.log(valorCarta())
-console.log(deck)
+//turno computadora
+const turnoComputadora = ( puntosMinimos) =>{
+
+    do {
+        const carta = darCarta();
+    puntosComputadora = puntosComputadora + valorCarta(carta);
+    puntosHTML[1].innerText = puntosComputadora;
+    // console.log( carta )
+    // console.log( puntosJugador)
+    
+    const imagen = document.createElement('img');
+    imagen.src = `assets/cartas/${ carta }.png`;
+    imagen.classList.add('carta');
+    divCartasComputadora.append( imagen );
+
+    if(puntosMinimos > 21){
+        // puntosHTML[0].innerText = ' PERDISTE';
+        break;
+    }
+    
+        
+    } while (puntosMinimos > puntosComputadora && puntosMinimos <= 21);
+//    puntosHTML[0].innerText = 'PERDISTE'
+
+    if(puntosComputadora == puntosMinimos || puntosMinimos > 21 || (puntosComputadora > puntosMinimos && puntosComputadora < 22)){
+        puntosHTML[0].innerText = 'Perdiste'
+    }else if(puntosMinimos < 22 && (puntosComputadora < puntosMinimos || puntosComputadora > 21)){
+        puntosHTML[0].innerText = 'Ganaste'
+    }
+}
+
+
+//Eventos
+
+btnNuevo.addEventListener('click', () =>{
+
+})
+
+btnPedir.addEventListener('click', () => {
+    const carta = darCarta();
+    puntosJugador = puntosJugador + valorCarta(carta);
+    puntosHTML[0].innerText = puntosJugador;
+    
+    const imagen = document.createElement('img');
+    imagen.src = `assets/cartas/${ carta }.png`;
+    imagen.classList.add('carta');
+    divCartasJugador.append( imagen );
+    
+    if (puntosJugador > 21) {
+        // puntosHTML[0].innerText = `${puntosJugador} - PERDISTE`;
+        btnPedir.disabled = true;
+        btnDetener.disabled = true;
+        turnoComputadora(puntosJugador);
+    } else if( puntosJugador === 21){
+        btnPedir.disabled = true;
+        btnDetener = true;
+        turnoComputadora(puntosJugador);
+    }
+
+})
+
+btnDetener.addEventListener('click', () =>{
+    btnPedir.disabled = true;
+    btnDetener.disabled = true;
+    turnoComputadora(puntosJugador);
+    // if(puntosJugador > puntosComputadora || puntosComputadora > 21){
+    //     puntosHTML[0].innerText = `GANASTE`;
+    // }
+})
+
+
+
+//Todo: borrar
 
 
 
