@@ -1,3 +1,8 @@
+
+
+(() => {
+    'use strict'
+
 //Variables
 let deck = [];
 const tipos = ['C', 'D', 'H', 'S'];
@@ -23,7 +28,7 @@ const crearDeck = () => {
     }
     for (let i = 0; i < especiales.length; i++) {
         for (const esp of especiales) {
-            deck.push(esp + tipos[i])
+            deck.push(esp + tipos[i]);
         }
     }
     return deck;
@@ -75,7 +80,6 @@ const valorCarta = (carta) => {
     return puntos;
 }
 
-
 //Logica turno computadora
 const turnoComputadora = (puntosMinimos) => {
 
@@ -97,9 +101,9 @@ const turnoComputadora = (puntosMinimos) => {
     } while (puntosMinimos > puntosComputadora && puntosMinimos <= 21);
 
     if (puntosComputadora == puntosMinimos || puntosMinimos > 21 || (puntosComputadora > puntosMinimos && puntosComputadora < 22)) {
-        puntosHTML[0].innerText = 'Perdiste'
+        puntosHTML[0].innerText = 'Perdiste';
     } else if (puntosMinimos < 22 && (puntosComputadora < puntosMinimos || puntosComputadora > 21)) {
-        puntosHTML[0].innerText = 'Ganaste'
+        puntosHTML[0].innerText = 'Ganaste';
     }
 }
 
@@ -121,7 +125,7 @@ btnPedir.addEventListener('click', () => {
         turnoComputadora(puntosJugador);
     } else if (puntosJugador === 21) {
         btnPedir.disabled = true;
-        btnDetener = true;
+        btnDetener.disabled = true;
         turnoComputadora(puntosJugador);
     }
 
@@ -147,10 +151,8 @@ btnNuevo.addEventListener('click', () => {
     divCartasJugador.innerHTML = '';
     btnDetener.disabled = false;
     btnPedir.disabled = false;
-
 })
 
-
-
+})();
 
 
